@@ -57,7 +57,7 @@ int main(){
 
     //VAMOS ADICIONAR UM GERENTE
     //GERENTE 1:
-    cout<<"CADATRO DE GERENTE:"<<endl;
+    cout<<"CADASTRO DE GERENTE:"<<endl;
     gerentes[0].set_nome("Paola");
     cout<<"Nome: \t\t\t\t"<<gerentes[0].get_nome()<<endl;
     gerentes[0].set_matricula("01");
@@ -74,7 +74,7 @@ int main(){
     cout << gerentes[0].alterar_senha(&senhaAntiga, &novaSenha);
 
     //GERENTE 2:
-    cout<<"CADATRO DE GERENTE:"<<endl;
+    cout<<"CADASTRO DE GERENTE:"<<endl;
     gerentes[1].set_nome("Camila");
     cout<<"Nome: \t\t\t\t"<<gerentes[1].get_nome()<<endl;
     gerentes[1].set_matricula("02");
