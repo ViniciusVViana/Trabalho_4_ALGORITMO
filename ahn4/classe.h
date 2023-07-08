@@ -122,71 +122,83 @@ float funcionario::calculaSalarioBruto(){
     return salarioBruto;
 };
 
-class gerente : public funcionario{
-    private:
+class gerente : public funcionario {
+private:
     int quantFunc;
     float quantHorasExce;
     string senha = " ";
     bool autenticar(string *password);
-    public:
+
+public:
     void set_quantFunc(int funcQuant);
     int get_quantFunc();
     void set_quantHorasExce(float quantExceHoras);
     float get_quantHorasExce();
-    bool alterar_senha(string *senhaAntiga,string *novaSenha);
+    bool alterar_senha(string *senhaAntiga, string *novaSenha);
     void set_quantidadeHorasTrabalhadas(float horas) override;
     float calculaBonus() override;
+    bool getAutenticar();
+    void setAutenticar(string *password);
 };
-float gerente::calculaBonus(){
+
+float gerente::calculaBonus() {
     float bonus;
     bonus = (get_quantFunc() * 0.05) * get_salarioBase();
-    if(bonus > (get_salarioBase() * 0.3)){
+    if (bonus > (get_salarioBase() * 0.3)) {
         return 0;
-    }else{
-        bonus = bonus + ((get_salarioBase() * 1.5)/get_cargaHorariaMensal());
+    } else {
+        bonus = bonus + ((get_salarioBase() * 1.5) / get_cargaHorariaMensal());
         return bonus;
-    };
-};
-void gerente::set_quantidadeHorasTrabalhadas(float horas){
-    if(horas > get_cargaHorariaMensal()){
+    }
+}
+
+void gerente::set_quantidadeHorasTrabalhadas(float horas) {
+    if (horas > get_cargaHorariaMensal()) {
         set_quantHorasExce(horas - get_cargaHorariaMensal());
         set_quantidadeHorasTrabalhadas(get_cargaHorariaMensal());
-    }else{
+    } else {
         set_quantidadeHorasTrabalhadas(horas);
-    };
-};
-bool gerente::alterar_senha(string *senhaAntiga, string *novaSenha){
-    if(senha == " "){
-        senha = novaSenha;
+    }
+}
+
+bool gerente::alterar_senha(string *senhaAntiga, string *novaSenha) {
+    if (senha == " ") {
+        senha = *novaSenha;
         return true;
-    }else if(senha != " "){
-        if(senhaAntiga == senha){
-            senha = novaSenha;
+    } else if (senha != " ") {
+        if (*senhaAntiga == senha) {
+            senha = *novaSenha;
             return true;
-        }else if(senhaAntiga != senha){
+        } else if (*senhaAntiga != senha) {
             return false;
-        };
-    };
-};
-float gerente::get_quantHorasExce(){
+        }
+    }
+    return false;
+}
+
+float gerente::get_quantHorasExce() {
     return quantHorasExce;
-};
-void gerente::set_quantHorasExce(float quantExceHoras){
+}
+
+void gerente::set_quantHorasExce(float quantExceHoras) {
     quantHorasExce = quantExceHoras;
-};
-int gerente::get_quantFunc(){
+}
+
+int gerente::get_quantFunc() {
     return quantFunc;
-};
-void gerente::set_quantFunc(int funcQuant){
+}
+
+void gerente::set_quantFunc(int funcQuant) {
     quantFunc = funcQuant;
-};
-bool gerente::autenticar(string password){
-    if(password == senha){
+}
+
+bool gerente::autenticar(string *password) {
+    if (*password == senha) {
         return true;
-    }else if(password != senha){
+    } else {
         return false;
-    };
-};
+    }
+}
 
 class estagiario : public funcionario{
     private:
@@ -215,7 +227,7 @@ void estagiario::set_tipoEstagiario(bool tipoEst){
 float estagiario::calculaBonus(){
     if(get_tipoEstagiario() == 0){
         return (get_salarioBase() * 0.05) / get_tempoRestante();
-    }else if(get_tipoEstagiario() == 1){
+    }else{
         return (get_salarioBase() * 0.1) / get_tempoRestante();
     };
 };
@@ -243,25 +255,57 @@ void cliente::set_phone(string phn){
     phone = phn;
 };
 
-/* class empresa: public Pessoa_j{
-    public:
-    int *i= 0;
-    funcionario *Funcionarios = new funcionario[3];
-    void adicionarFuncionarios(funcionario *Funcionarios, int *i);
-    /////////////////////////////////////////////////////////////
-    int j = 0;
-    cliente *Clientes = new cliente[10];
-    void adicionarClientes(funcionario &Clientes);
+// Class Empresa:
+
+class Empresa : public Pessoa_j {
+private:
+    string cliente;
+    vector<string> gerenteE;
+    vector<string> funcionarios;
+
+public:
+    void adicionarFuncionario(string nome);
+    void adicionarGerente(string nome);
+    void adicionarCliente(string nome);
+    void imprimirFuncionarios();
+    void imprimirCliente();
+    float calcularFolhaDePagamentoGerentes(float salarioBase);
+    float calcularFolhaDePagamentoEstagiarios(float salarioBase);
 };
-void empresa::adicionarFuncionarios(funcionario *Funcionarios, int *i){
-    float Sal;
-    string nom;
-    cout<<"Vamos adicionar um funcionario."<<endl;
-    cout<<"Para isso insira as informaçoes requisitadas:"<<endl;
-    cout<<"Vamos inserir o nome do funcionario: ";
-    cin>>nom;
-    this->Funcionarios[*i].set_nome(nom);
 
-}; */
+void Empresa::adicionarFuncionario(string nome) {
+    funcionarios.push_back(nome);
+}
+void Empresa::adicionarGerente(string nome) {
+    gerenteE.push_back(nome);
+}
 
+void Empresa::adicionarCliente(string nome) {
+    cliente = nome;
+}
+
+void Empresa::imprimirFuncionarios() {
+    cout << "Funcionários da empresa:" << endl;
+    cout << "Funcionários:" << endl;
+    for (const string& funcionario : funcionarios) {
+        cout << funcionario << endl;
+    }
+    cout << "Gerentes:" << endl;
+    for (const string& gerente : gerenteE) {
+        cout << gerente << endl;
+    }
+}
+
+void Empresa::imprimirCliente() {
+    cout << "Cliente da empresa: " << cliente << endl;
+}
+
+float Empresa::calcularFolhaDePagamentoEstagiarios(float salarioBase) {
+    float salarioFixo = salarioBase;
+    return salarioFixo * funcionarios.size();
+}
+float Empresa::calcularFolhaDePagamentoGerentes(float salarioBase) {
+    float salarioFixo = salarioBase;
+    return salarioFixo * gerenteE.size();
+}
 #endif
