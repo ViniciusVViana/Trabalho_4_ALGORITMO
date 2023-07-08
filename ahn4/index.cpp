@@ -101,11 +101,11 @@ int main(){
     empresa->set_rs("Vinicin&Felipin LTDA.");
     empresa->set_nomefant("TRABAIO DE ALG");
 
-    empresa->adicionarFuncionario("Vinicius");
-    empresa->adicionarFuncionario("Felipe");
+    empresa->adicionarFuncionario(estagiarios[0].get_nome());
+    empresa->adicionarFuncionario(estagiarios[1].get_nome());
 
-    empresa->adicionarGerente("Paola");
-    empresa->adicionarGerente("Camila");
+    empresa->adicionarGerente(gerentes[0].get_nome());
+    empresa->adicionarGerente(gerentes[1].get_nome());
 
     float salario_funcionarios = empresa->calcularFolhaDePagamentoGerentes(gerentes[0].get_salarioBase()) +
                                  empresa->calcularFolhaDePagamentoGerentes(gerentes[0].calculaBonus()) +
